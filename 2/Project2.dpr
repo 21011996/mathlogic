@@ -10,16 +10,41 @@ type
     constructor Create(literal:string); overload;
     constructor Create(left:Expression;right:Expression;operation:Char); overload;
   end;
+type
+  Strong=class
+  public
+    value:string;
+    constructor create(a:string); overload;
+  end;
+type
+  Intonger=class
+  public
+    value:Integer;
+    constructor create(a:Integer); overload;
+  end;
 
 var
   f,g:Text;
-  parstr,help,now:string;
+  parstr,help,now,start,strbeta,stralpha:string;
   flag:boolean;
-  axioms,allExpressions:TList;
+  axioms,allExpressions,allAdmissions:TList;
+  strExpressions,strAdmissions:TList;
+  modusPonens:Tlist;
   map: TDictionary<string, Expression>;
-  exp:Expression;
+  exp,alpha:Expression;
+  i:Integer;
+  stronger,stronger2:Strong;
+  intoger:Intonger;
 
+constructor Strong.create(a: string);
+begin
+  value:=a;
+end;
 
+constructor Intonger.create(a: Integer);
+begin
+  value:=a;
+end;
 
 constructor Expression.Create;
   begin
@@ -250,7 +275,7 @@ function checkMP(exp:Expression):Boolean;
             for j := 0 to allExpressions.Count - 1 do
               if (equalsTree(left,allExpressions[j])) then
                 begin
-                  help:='M.P. '+inttostr(j+1)+', '+inttostr(i+1);
+                  help:='M.P. '+inttostr(i+2)+', '+inttostr(j+2);
                   checkMP:=True;
                   Exit;
                 end;
@@ -260,29 +285,163 @@ function checkMP(exp:Expression):Boolean;
     checkMP:=False;
   end;
 
+procedure makeAdmissions(first:string);
+  var
+    allAdm:string;
+    last,i:Integer;
+  begin
+    allAdm:=Copy(first,1,Pos('|',first)-1);
+    parstr:=Copy(first,Pos('|',first)+2,Length(first)-Pos('|',first)+1);
+    strbeta:=parstr;
+    last:=1;
+    for I := 1 to Length(allAdm) do
+      begin
+        if (allAdm[i]=',') then
+          begin
+            parstr:=Copy(allAdm,last,i-last);
+            strAdmissions.Add(Strong.create(parstr));
+            parstr:=StringReplace(parstr,'->','>',[rfReplaceAll]);
+            allAdmissions.Add(parse(1,Length(parstr)));
+            last:=i+1;
+          end;
+        if (i=Length(allAdm)) then
+          begin
+            parstr:=Copy(allAdm,last,i+1-last);
+            strAdmissions.Add(Strong.create(parstr));
+            stralpha:=parstr;
+            parstr:=StringReplace(parstr,'->','>',[rfReplaceAll]);
+            allAdmissions.Add(parse(1,Length(parstr)));
+            alpha:=allAdmissions[allAdmissions.Count-1];
+            if (last=1) then
+              start:='|-('+stralpha+')->('+strbeta+')'
+            else
+              start:=Copy(first,1,last-2)+'|-('+stralpha+')->('+strbeta+')';
+          end;
+      end;
+  end;
+
+function checkAdmissions(Exp:Expression):Boolean;
+  var
+    i:Integer;
+  begin
+    for I := 0 to allAdmissions.Count - 1 do
+      if (equalsTree(exp,allAdmissions[i])) then
+        begin
+          help:='Допущение '+inttostr(i+1);
+          checkAdmissions:=True;
+          Exit;
+        end;
+    checkAdmissions:=False;
+  end;
+
+procedure printMP(beta1,beta2:string);
+  var
+    temp,temp1:string;
+  begin
+    temp := '((' + stralpha + ')->(' + beta1 + '))';
+    temp1 := '((' + beta2 + ')->(' + beta1 + '))';
+    Writeln(g,'((' + stralpha + ')->(' + beta2 + '))->(((' + stralpha + ')->' + temp1 + ')->' + temp + ')');
+    Writeln(g,'(((' + stralpha + ')->' + temp1 + ')->' + temp + ')');
+    Writeln(g,'(' + stralpha + ')->(' + beta1 + ')');
+  end;
+
+procedure printLemm(strExp:string);
+  var
+    temp:string;
+  begin
+    temp := '((' + strExp + ')->(' + strExp + '))';
+    Writeln(g,'(' + strExp + ')->' + temp);
+    Writeln(g,'((' + strExp + ')->' + temp + ')->((' + strExp + ')->' + temp + '->(' + strExp + '))->' + temp);
+    Writeln(g,'((' + strExp + ')->(' + temp + '->(' + strExp + ')))->' + temp);
+    Writeln(g,'(' + strExp + ')->' + '(' + temp + '->(' + strExp + '))');
+    Writeln(g,'(' + strExp + ')->(' + strExp + ')');
+  end;
+
+
+
 
 begin
   flag:=True;
-  Assign(f,'proof0.out');
-  Assign(g,'proooff.out');
+  Assign(f,'proof0.in');
+  Assign(g,'proof0.out');
   Reset(f);
   Rewrite(g);
   map:= TDictionary<String, Expression>.Create;
   axioms:=TList.Create;
-  allExpressions := Tlist.Create;
+  allExpressions:=TList.Create;
+  strExpressions:=TList.Create;
+  allAdmissions:=TList.Create;
+  strAdmissions:=TList.Create;
+  modusPonens:=TList.Create;
   addAxioms();
+  Readln(f,now);
+  makeAdmissions(now);
+  flag:=False;
   while (not Eof(f)) do
     begin
+      modusPonens.Add(Intonger.create(-1));
       help:='';
-      Readln(f,parstr);
+       Readln(f,now);
+      parstr:=now;
+      strExpressions.Add(strong.create(parstr));
       parstr:=StringReplace(parstr,'->','>',[rfReplaceAll]);
-      exp:=parse(1, Length(parstr));
+      exp:=parse(1,Length(parstr));
       allExpressions.Add(exp);
-      if not (axiomSatisfy(Exp) or checkMP(exp)) then
-          Writeln(g,'(',allExpressions.Count,') ',parstr,' (Не доказано)')
-      else
-        Writeln(g,'(',allExpressions.Count,') ',StringReplace(parstr,'>','->',[rfReplaceAll]),' (',help,')');
+      flag:=axiomSatisfy(exp);
+      if (not flag) then
+        flag:=checkMP(exp);
+      if (not flag) then
+        flag:=checkAdmissions(exp);
+      if (not flag) then
+        begin
+          Writeln(g,'Ошибка в ',allExpressions.Count);
+          break;
+        end;
     end;
+  Writeln(g,start);
+  allAdmissions.Delete(allAdmissions.Count-1);
+  strAdmissions.Delete(strAdmissions.Count-1);
+  for I := 0 to allExpressions.Count - 1 do
+    begin
+      help:='';
+      exp:=allExpressions[i];
+      stronger:=strExpressions[i];
+      now:=stronger.value;
+      if (checkAdmissions(exp)) then
+        begin
+          Writeln(g,now);
+          Writeln(g,'('+now+')->(('+stralpha+')->('+now+'))');
+          Writeln(g,'('+stralpha+')->('+now+')');
+          //Writeln(g,' '+help);
+          Continue
+        end;
+      if (axiomSatisfy(exp)) then
+        begin
+          Writeln(g,now);
+          Writeln(g,'('+now+')->(('+stralpha+')->('+now+'))');
+          Writeln(g,'('+stralpha+')->('+now+')');
+          //Writeln(g,' '+help);
+          Continue
+        end;
+      if (equalsTree(exp,alpha)) then
+        begin
+          printLemm(now);
+          help:='Лемма';
+          //Writeln(g,' '+help);
+          Continue
+        end;
+      if (checkAdmissions(exp)) then
+        begin
+          stronger:=strExpressions[i];
+          intoger:=modusPonens[i];
+          stronger2:=strExpressions[intoger.value];
+          printMP(stronger.value,stronger2.value);
+          help:='MP '+inttostr(i+1)+' '+inttostr(intoger.value+1);
+          //Writeln(g,' '+help);
+          Continue
+        end;
+    end;
+
   Close(f);
   Close(g);
 end.

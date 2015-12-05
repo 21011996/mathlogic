@@ -3,7 +3,7 @@
  * Created by Ilya on 01.12.2015.
  */
 
-public class HelpUtils {
+public class ExpressionToHash {
     public static class ExpressionHash {
         long hashSumm[];
         private final static int N = 8000;
@@ -19,7 +19,7 @@ public class HelpUtils {
         }
     }
     static ExpressionHash expressionHash = new ExpressionHash();
-    HelpUtils() {
+    ExpressionToHash() {
        expressionHash = new ExpressionHash();
     }
 }

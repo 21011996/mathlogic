@@ -32,10 +32,10 @@ public class Expression {
         }
         hash = 0;
         if (left != null) hash += left.hash;
-        hash *= HelpUtils.expressionHash.getHash(1);
+        hash *= ExpressionToHash.expressionHash.getHash(1);
         hash += s.charAt(0);
         if (right != null) {
-            hash *= HelpUtils.expressionHash.getHash(rightCount);
+            hash *= ExpressionToHash.expressionHash.getHash(rightCount);
             hash += right.hash;
         }
 

@@ -4,14 +4,14 @@ import java.util.Map;
  * Created by Ilya on 05.12.2015.
  */
 
-public class Not implements Expression {
-    private Expression expr;
+public class Not implements Term {
+    private Term expr;
 
-    public Not(Expression expr) {
+    public Not(Term expr) {
         this.expr = expr;
     }
 
-    public Expression getExpr() {
+    public Term getExpr() {
         return expr;
     }
 

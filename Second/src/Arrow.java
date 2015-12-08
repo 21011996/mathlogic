@@ -2,22 +2,22 @@
 /**
  * Created by Ilya on 05.12.2015.
  */
+//forgot how implication was called in English XD
+public class Arrow extends BinOperation {
 
-public class Or extends BinOperation {
-
-    public Or(Term left, Term right) {
+    public Arrow(Term left, Term right) {
         super(left, right);
     }
 
     @Override
     protected boolean calculate(boolean leftVal, boolean rightVal) {
-        return (leftVal || rightVal);
+        return !(leftVal && !rightVal);
     }
 
     @Override
     public boolean equals(Object o) {
-        if (o instanceof Or) {
-            Or c = (Or) o;
+        if (o instanceof Arrow) {
+            Arrow c = (Arrow) o;
             return (left.equals(c.left) && right.equals(c.right));
         } else {
             return false;
@@ -26,6 +26,6 @@ public class Or extends BinOperation {
 
     @Override
     public String toString(){
-        return "(" + left.toString() + "|" +  right.toString() + ")";
+        return "(" + left.toString() + "->" + right.toString() + ")";
     }
 }

@@ -19,7 +19,7 @@ public class RunTests {
         }
         if (!justDelete) {
             for (int i = 0; i < n; i++) {
-                Main testInstance = new Main();
+                Convertor testInstance = new Convertor();
                 testInstance.mainForTest("contra" + i);
             }
         }

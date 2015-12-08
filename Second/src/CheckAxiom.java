@@ -5,30 +5,30 @@
 
 public class CheckAxiom {
 
-    private static boolean check1(Expression e) {
-        if (e instanceof LinkBetween) {
-            LinkBetween impl1 = (LinkBetween) e;
-            if (impl1.getRight() instanceof LinkBetween) {
-                LinkBetween impl2 = (LinkBetween) impl1.getRight();
+    private static boolean check1(Term e) {
+        if (e instanceof Arrow) {
+            Arrow impl1 = (Arrow) e;
+            if (impl1.getRight() instanceof Arrow) {
+                Arrow impl2 = (Arrow) impl1.getRight();
                 return (impl1.getLeft().equals(impl2.getRight()));
             }
         }
         return false;
     }
 
-    private static boolean check2(Expression e) {
-        if (e instanceof LinkBetween) {
-            LinkBetween impl1 = (LinkBetween) e;
-            if (impl1.getLeft() instanceof LinkBetween) {
-                LinkBetween impl2 = (LinkBetween) impl1.getLeft();
-                if (impl1.getRight() instanceof LinkBetween) {
-                    LinkBetween impl3 = (LinkBetween) impl1.getRight();
-                    if (impl3.getLeft() instanceof LinkBetween) {
-                        LinkBetween impl4 = (LinkBetween) impl3.getLeft();
-                        if (impl4.getRight() instanceof LinkBetween) {
-                            LinkBetween impl5 = (LinkBetween) impl4.getRight();
-                            if (impl3.getRight() instanceof LinkBetween) {
-                                LinkBetween impl6 = (LinkBetween) impl3.getRight();
+    private static boolean check2(Term e) {
+        if (e instanceof Arrow) {
+            Arrow impl1 = (Arrow) e;
+            if (impl1.getLeft() instanceof Arrow) {
+                Arrow impl2 = (Arrow) impl1.getLeft();
+                if (impl1.getRight() instanceof Arrow) {
+                    Arrow impl3 = (Arrow) impl1.getRight();
+                    if (impl3.getLeft() instanceof Arrow) {
+                        Arrow impl4 = (Arrow) impl3.getLeft();
+                        if (impl4.getRight() instanceof Arrow) {
+                            Arrow impl5 = (Arrow) impl4.getRight();
+                            if (impl3.getRight() instanceof Arrow) {
+                                Arrow impl6 = (Arrow) impl3.getRight();
                                 boolean fl1 = impl2.getLeft().equals(impl4.getLeft()) && impl2.getLeft().equals(impl6.getLeft());
                                 boolean fl2 = impl2.getRight().equals(impl5.getLeft());
                                 boolean fl3 = impl5.getRight().equals(impl6.getRight());
@@ -42,11 +42,11 @@ public class CheckAxiom {
         return false;
     }
 
-    private static boolean check3(Expression e) {
-        if (e instanceof LinkBetween) {
-            LinkBetween impl1 = (LinkBetween) e;
-            if (impl1.getRight() instanceof LinkBetween) {
-                LinkBetween impl2 = (LinkBetween) impl1.getRight();
+    private static boolean check3(Term e) {
+        if (e instanceof Arrow) {
+            Arrow impl1 = (Arrow) e;
+            if (impl1.getRight() instanceof Arrow) {
+                Arrow impl2 = (Arrow) impl1.getRight();
                 if (impl2.getRight() instanceof And) {
                     And conj1 = (And) impl2.getRight();
                     boolean fl1 = impl1.getLeft().equals(conj1.getLeft());
@@ -58,9 +58,9 @@ public class CheckAxiom {
         return false;
     }
 
-    private static boolean check4(Expression e) {
-        if (e instanceof LinkBetween) {
-            LinkBetween impl1 = (LinkBetween) e;
+    private static boolean check4(Term e) {
+        if (e instanceof Arrow) {
+            Arrow impl1 = (Arrow) e;
             if (impl1.getLeft() instanceof And) {
                 And conj1 = (And) impl1.getLeft();
                 return (impl1.getRight().equals(conj1.getLeft()));
@@ -69,9 +69,9 @@ public class CheckAxiom {
         return false;
     }
 
-    private static boolean check5(Expression e) {
-        if (e instanceof LinkBetween) {
-            LinkBetween impl1 = (LinkBetween) e;
+    private static boolean check5(Term e) {
+        if (e instanceof Arrow) {
+            Arrow impl1 = (Arrow) e;
             if (impl1.getLeft() instanceof And) {
                 And conj1 = (And) impl1.getLeft();
                 return (impl1.getRight().equals(conj1.getRight()));
@@ -80,9 +80,9 @@ public class CheckAxiom {
         return false;
     }
 
-    private static boolean check6(Expression e) {
-        if (e instanceof LinkBetween) {
-            LinkBetween impl1 = (LinkBetween) e;
+    private static boolean check6(Term e) {
+        if (e instanceof Arrow) {
+            Arrow impl1 = (Arrow) e;
             if (impl1.getRight() instanceof Or) {
                 Or disj1 = (Or) impl1.getRight();
                 return (impl1.getLeft().equals(disj1.getLeft()));
@@ -91,9 +91,9 @@ public class CheckAxiom {
         return false;
     }
 
-    private static boolean check7(Expression e) {
-        if (e instanceof LinkBetween) {
-            LinkBetween impl1 = (LinkBetween) e;
+    private static boolean check7(Term e) {
+        if (e instanceof Arrow) {
+            Arrow impl1 = (Arrow) e;
             if (impl1.getRight() instanceof Or) {
                 Or disj1 = (Or) impl1.getRight();
                 return (impl1.getLeft().equals(disj1.getRight()));
@@ -102,17 +102,17 @@ public class CheckAxiom {
         return false;
     }
 
-    private static boolean check8(Expression e) {
-        if (e instanceof LinkBetween) {
-            LinkBetween impl1 = (LinkBetween) e;
-            if (impl1.getLeft() instanceof LinkBetween) {
-                LinkBetween impl2 = (LinkBetween) impl1.getLeft();
-                if (impl1.getRight() instanceof LinkBetween) {
-                    LinkBetween impl3 = (LinkBetween) impl1.getRight();
-                    if (impl3.getLeft() instanceof LinkBetween) {
-                        LinkBetween impl4 = (LinkBetween) impl3.getLeft();
-                        if (impl3.getRight() instanceof LinkBetween) {
-                            LinkBetween impl5 = (LinkBetween) impl3.getRight();
+    private static boolean check8(Term e) {
+        if (e instanceof Arrow) {
+            Arrow impl1 = (Arrow) e;
+            if (impl1.getLeft() instanceof Arrow) {
+                Arrow impl2 = (Arrow) impl1.getLeft();
+                if (impl1.getRight() instanceof Arrow) {
+                    Arrow impl3 = (Arrow) impl1.getRight();
+                    if (impl3.getLeft() instanceof Arrow) {
+                        Arrow impl4 = (Arrow) impl3.getLeft();
+                        if (impl3.getRight() instanceof Arrow) {
+                            Arrow impl5 = (Arrow) impl3.getRight();
                             if (impl5.getLeft() instanceof Or) {
                                 Or disj1 = (Or) impl5.getLeft();
                                 boolean fl1 = impl2.getLeft().equals(disj1.getLeft());
@@ -128,15 +128,15 @@ public class CheckAxiom {
         return false;
     }
 
-    private static boolean check9(Expression e) {
-        if (e instanceof LinkBetween) {
-            LinkBetween impl1 = (LinkBetween)e;
-            if (impl1.getLeft() instanceof LinkBetween){
-                LinkBetween impl2 = (LinkBetween)impl1.getLeft();
-                if(impl1.getRight() instanceof LinkBetween){
-                    LinkBetween impl3 = (LinkBetween)impl1.getRight();
-                    if (impl3.getLeft() instanceof LinkBetween){
-                        LinkBetween impl4 = (LinkBetween)impl3.getLeft();
+    private static boolean check9(Term e) {
+        if (e instanceof Arrow) {
+            Arrow impl1 = (Arrow)e;
+            if (impl1.getLeft() instanceof Arrow){
+                Arrow impl2 = (Arrow)impl1.getLeft();
+                if(impl1.getRight() instanceof Arrow){
+                    Arrow impl3 = (Arrow)impl1.getRight();
+                    if (impl3.getLeft() instanceof Arrow){
+                        Arrow impl4 = (Arrow)impl3.getLeft();
                         if (impl4.getRight() instanceof Not){
                             Not neg1 = (Not) impl4.getRight();
                             if (impl3.getRight() instanceof Not) {
@@ -154,9 +154,9 @@ public class CheckAxiom {
         return false;
     }
 
-    private static boolean check10(Expression e) {
-        if (e instanceof LinkBetween) {
-            LinkBetween impl1 = (LinkBetween) e;
+    private static boolean check10(Term e) {
+        if (e instanceof Arrow) {
+            Arrow impl1 = (Arrow) e;
             if (impl1.getLeft() instanceof Not) {
                 Not neg1 = (Not) impl1.getLeft();
                 if (neg1.getExpr() instanceof Not) {
@@ -168,7 +168,7 @@ public class CheckAxiom {
         return false;
     }
 
-    public static int ifAxiom(Expression e){
+    public static int ifAxiom(Term e){
         if (check1(e)) return 1;
         if (check2(e)) return 2;
         if (check3(e)) return 3;

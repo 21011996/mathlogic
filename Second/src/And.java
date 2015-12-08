@@ -3,14 +3,14 @@
  * Created by Ilya on 05.12.2015.
  */
 
-public class And extends BaseOperation {
+public class And extends BinOperation {
 
-    public And(Expression left, Expression right) {
+    public And(Term left, Term right) {
         super(left, right);
     }
 
     @Override
-    protected boolean apply(boolean leftVal, boolean rightVal) {
+    protected boolean calculate(boolean leftVal, boolean rightVal) {
         return (leftVal && rightVal);
     }
 

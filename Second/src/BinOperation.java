@@ -1,9 +1,5 @@
 import java.util.Map;
 
-/**
- * Created by Ilya on 05.12.2015.
- */
-
 public abstract class BinOperation implements Term {
 
     protected Term left;

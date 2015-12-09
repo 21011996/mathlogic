@@ -1,10 +1,6 @@
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
-/**
- * Created by Ilya on 05.12.2015.
- */
-
 public class RunTests {
 
     public static void main(String[] args) {

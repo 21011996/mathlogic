@@ -1,7 +1,4 @@
 
-/**
- * Created by Ilya on 05.12.2015.
- */
 public class AxiomChecker {
 
     boolean isEqual(Expression a, Expression b) {

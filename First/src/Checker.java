@@ -1,13 +1,9 @@
 import java.io.*;
 import java.util.StringTokenizer;
 
-/**
- * Created by Ilya on 01.12.2015.
- */
-
 public class Checker {
     private String fileName = "input";
-    private static final int N = 8000;
+    int max = 8000;
     int n, currentChar;
     String s;
 
@@ -20,17 +16,9 @@ public class Checker {
         this.run();
     }
 
-    Expression expressions[] = new Expression[N];
+    Expression expressions[] = new Expression[max];
     AxiomChecker axiomChecker = new AxiomChecker();
-    boolean isProved[] = new boolean[N];
-    private class Pair {
-        int first, second;
-        Pair(int first, int second) {
-            this.first = first;
-            this.second = second;
-        }
-    }
-
+    boolean isProved[] = new boolean[max];
 
     void solve() throws IOException {
         InputStream is = new FileInputStream(fileName + ".in");
@@ -69,6 +57,14 @@ public class Checker {
         }
 
         out.close();
+    }
+
+    private class Pair {
+        int first, second;
+        Pair(int first, int second) {
+            this.first = first;
+            this.second = second;
+        }
     }
 
     boolean compareExpressions(Expression a, Expression b) {

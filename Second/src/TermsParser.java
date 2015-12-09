@@ -1,8 +1,4 @@
 
-/**
- * Created by Ilya on 05.12.2015.
- */
-
 public class TermsParser {
     private String expr;
 
@@ -21,7 +17,7 @@ public class TermsParser {
                 balance--;
             }
             if (expr.charAt(i) == '>' && balance == 0) {
-                return new Arrow(parse(begin, i), parse(i + 1, end));
+                return new Implication(parse(begin, i), parse(i + 1, end));
             }
         }
 

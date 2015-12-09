@@ -2,10 +2,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Created by Ilya on 06.10.2015.
- */
-
 public abstract class Term {
 
     public boolean compWithPatt(Term pattern, Map<String, Term> patternValues) {
@@ -24,7 +20,7 @@ public abstract class Term {
 
     public abstract boolean compWithExp(Term term);
 
-    public abstract boolean compile(Map<String, Boolean> values);
+    public abstract boolean evaluate(Map<String, Boolean> values);
 
     public abstract void renew(Map<String, Term> expForNamedAnyExpression);
 

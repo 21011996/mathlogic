@@ -1,8 +1,4 @@
 
-/**
- * Created by Ilya on 05.12.2015.
- */
-
 public class Or extends BinOperation {
 
     public Or(Term left, Term right) {

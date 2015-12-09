@@ -1,17 +1,15 @@
 
-/**
- * Created by Ilya on 01.12.2015.
- */
-
 public class ExpressionToHash {
     public static class ExpressionHash {
+
         long hashSumm[];
-        private final static int N = 8000;
+        int max = 8000;
+
         ExpressionHash() {
-            hashSumm = new long[N * N];
+            hashSumm = new long[max * max];
             hashSumm[0] = 1;
             hashSumm[1] = 31;
-            for (int i = 2; i < N * N; i++)
+            for (int i = 2; i < max * max; i++)
                 hashSumm[i] = hashSumm[i - 1] * hashSumm[1];
         }
         long getHash(int i) {

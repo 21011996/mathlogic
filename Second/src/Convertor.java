@@ -2,10 +2,6 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
 
-/**
- * Created by Ilya on 05.12.2015.
- */
-
 public class Convertor {
 
     private String fileNameInput = "input";
@@ -49,50 +45,50 @@ public class Convertor {
         for (Term expr : terms) {
             i++;
             flag = false;
-            if (CheckAxiom.ifAxiom(expr) != -1) {
+            if (AxiomChecker.isAxiom(expr) != -1) {
                 answer.add(expr);
-                answer.add(new Arrow(expr, new Arrow(alpha, expr)));
-                answer.add(new Arrow(alpha, expr));
+                answer.add(new Implication(expr, new Implication(alpha, expr)));
+                answer.add(new Implication(alpha, expr));
                 flag = true;
                 continue;
             }
             for (Term g : assumptions) {
                 if (g.equals(expr)) {
                     answer.add(expr);
-                    answer.add(new Arrow(expr, new Arrow(alpha, expr)));
-                    answer.add(new Arrow(alpha, expr));
+                    answer.add(new Implication(expr, new Implication(alpha, expr)));
+                    answer.add(new Implication(alpha, expr));
                     flag = true;
 
                 }
                 if (flag) break;
             }
             if (alpha.equals(expr)) {
-                answer.add(new Arrow(alpha, new Arrow(alpha, alpha)));
-                answer.add(new Arrow(new Arrow(alpha, new Arrow(alpha, alpha)),
-                        new Arrow(new Arrow(alpha, new Arrow(
-                                new Arrow(alpha, alpha), alpha)), new Arrow(alpha, alpha))
+                answer.add(new Implication(alpha, new Implication(alpha, alpha)));
+                answer.add(new Implication(new Implication(alpha, new Implication(alpha, alpha)),
+                        new Implication(new Implication(alpha, new Implication(
+                                new Implication(alpha, alpha), alpha)), new Implication(alpha, alpha))
                 ));
-                answer.add(new Arrow(new Arrow(alpha, new Arrow(new Arrow(alpha, alpha), alpha)),
-                        new Arrow(alpha, alpha)));
-                answer.add(new Arrow(alpha, new Arrow(new Arrow(alpha, alpha), alpha)));
-                answer.add(new Arrow(alpha, alpha));
+                answer.add(new Implication(new Implication(alpha, new Implication(new Implication(alpha, alpha), alpha)),
+                        new Implication(alpha, alpha)));
+                answer.add(new Implication(alpha, new Implication(new Implication(alpha, alpha), alpha)));
+                answer.add(new Implication(alpha, alpha));
                 flag = true;
                 continue;
             }
 
             for (int j = 0; j < i - 1; j++) {
                 Term mp = terms.get(j);
-                if (mp instanceof Arrow) {
-                    Arrow impl = (Arrow) mp;
+                if (mp instanceof Implication) {
+                    Implication impl = (Implication) mp;
                     if (impl.getRight().equals(expr)) {
                         for (int k = 0; k < i - 1; k++) {
                             Term mp2 = terms.get(k);
                             if (mp2.equals(impl.getLeft())) {
-                                answer.add(new Arrow(new Arrow(alpha, mp2), new Arrow(new
-                                        Arrow(alpha, new Arrow(mp2, expr)), new Arrow(alpha, expr))));
-                                answer.add(new Arrow(new Arrow(alpha, new Arrow(mp2, expr)),
-                                        new Arrow(alpha, expr)));
-                                answer.add(new Arrow(alpha, expr));
+                                answer.add(new Implication(new Implication(alpha, mp2), new Implication(new
+                                        Implication(alpha, new Implication(mp2, expr)), new Implication(alpha, expr))));
+                                answer.add(new Implication(new Implication(alpha, new Implication(mp2, expr)),
+                                        new Implication(alpha, expr)));
+                                answer.add(new Implication(alpha, expr));
                                 flag = true;
                                 break;
                             }

@@ -1,10 +1,6 @@
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
-/**
- * Created by Ilya on 05.12.2015.
- */
-
 public class RunTests {
 
     public static void main(String[] args) {
@@ -23,12 +19,12 @@ public class RunTests {
         }
         if (!justDelete) {
             for (int i = 1; i <= n; i++) {
-                Main testInstance = new Main();
+                Calculator testInstance = new Calculator();
                 testInstance.mainForTests("different" + i);
             }
 
             for (int i = 1; i <= n; i++) {
-                Main testInstance = new Main();
+                Calculator testInstance = new Calculator();
                 testInstance.mainForTests("equal" + i);
             }
         }

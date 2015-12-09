@@ -1,10 +1,6 @@
 import java.util.List;
 import java.util.Map;
 
-/**
- * Created by Ilya on 06.10.2015.
- */
-
 public abstract class TermNode extends Term {
 
     private Term left;
@@ -59,8 +55,8 @@ public abstract class TermNode extends Term {
     }
 
     @Override
-    public boolean compile(Map<String, Boolean> values) {
-        return evaluate(left.compile(values), right.compile(values));
+    public boolean evaluate(Map<String, Boolean> values) {
+        return evaluate(left.evaluate(values), right.evaluate(values));
     }
 
     protected abstract boolean evaluate(boolean left, boolean right);
@@ -85,7 +81,7 @@ public abstract class TermNode extends Term {
     public void addSteps(Map<String, Boolean> varValues, List<Term> steps) {
         left.addSteps(varValues, steps);
         right.addSteps(varValues, steps);
-        Term.addSteps(getSolution(left.compile(varValues), right.compile(varValues)),
+        Term.addSteps(getSolution(left.evaluate(varValues), right.evaluate(varValues)),
                 left, right, steps);
     }
 

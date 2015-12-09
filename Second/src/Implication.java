@@ -1,11 +1,7 @@
 
-/**
- * Created by Ilya on 05.12.2015.
- */
-//forgot how implication was called in English XD
-public class Arrow extends BinOperation {
+public class Implication extends BinOperation {
 
-    public Arrow(Term left, Term right) {
+    public Implication(Term left, Term right) {
         super(left, right);
     }
 
@@ -16,8 +12,8 @@ public class Arrow extends BinOperation {
 
     @Override
     public boolean equals(Object o) {
-        if (o instanceof Arrow) {
-            Arrow c = (Arrow) o;
+        if (o instanceof Implication) {
+            Implication c = (Implication) o;
             return (left.equals(c.left) && right.equals(c.right));
         } else {
             return false;

@@ -8,10 +8,6 @@ import java.util.Stack;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-/**
- * Created by Ilya on 15.10.2015.
- */
-
 public class ParserForExp {
 
     public List<String> getAllVariables(String line) {
@@ -36,13 +32,13 @@ public class ParserForExp {
                 if (string.charAt(i) == '(') {
                     stack.push(i);
                 } else if (string.charAt(i) == ')') {
-                    Preconditions.checkArgument(!stack.empty(), "Input string has no pair opening bracket for bracket at index=" + i);
+                    Preconditions.checkArgument(!stack.empty(), "Paired bracket was not found at " + i);
                     int openIndex = stack.pop();
                     indexOfPairBracket[openIndex] = i;
                     indexOfPairBracket[i] = openIndex;
                 }
             }
-            Preconditions.checkArgument(stack.empty(), "Input string has unclosed bracket");
+            Preconditions.checkArgument(stack.empty(), "Bracket balance is broken");
         }
 
         public char charAt(int index) {
@@ -50,12 +46,12 @@ public class ParserForExp {
         }
 
         public int getClosingBracket(int openIndex) {
-            Preconditions.checkArgument(string.charAt(openIndex) == '(', "This is not an opening bracket");
+            Preconditions.checkArgument(string.charAt(openIndex) == '(', "Not open bracket");
             return indexOfPairBracket[openIndex];
         }
 
         public int getOpeningBracket(int closeIndex) {
-            Preconditions.checkArgument(string.charAt(closeIndex) == ')', "This is not an closing bracket");
+            Preconditions.checkArgument(string.charAt(closeIndex) == ')', "Not close bracket");
             return indexOfPairBracket[closeIndex];
         }
     }
@@ -116,7 +112,7 @@ public class ParserForExp {
     }
 
     protected Term createNamed(String name) {
-        Preconditions.checkState(name.matches("[A-Z][0-9]*"), "Incorrect variable name: " + name);
+        Preconditions.checkState(name.matches("[A-Z][0-9]*"), "Incorrect name : " + name);
         return new Constant(name);
     }
 

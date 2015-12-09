@@ -1,9 +1,10 @@
 
-/**
- * Created by Ilya on 06.10.2015.
- */
-
 public class And extends TermNode {
+
+    final static String[] TRUE_TRUE = TermBank.and_TRUE_TRUE;
+    final static String[] TRUE_FALSE = TermBank.and_TRUE_FALSE;
+    final static String[] FALSE_TRUE = TermBank.and_FALSE_TRUE;
+    final static String[] FALSE_FALSE = TermBank.and_FALSE_FALSE;
 
     public And(Term left, Term right) {
         super(left, right);
@@ -18,36 +19,6 @@ public class And extends TermNode {
     protected boolean evaluate(boolean left, boolean right) {
         return left && right;
     }
-
-    final static String[] TRUE_TRUE = {
-            "A->B->A&B",
-            "B->A&B",
-            "A&B"
-    };
-    final static String[] TRUE_FALSE = {
-            "!B->A&B->!B",
-            "A&B->!B",
-            "A&B->B",
-            "(A&B->B)->(A&B->!B)->!(A&B)",
-            "(A&B->!B)->!(A&B)",
-            "!(A&B)"
-    };
-    final static String[] FALSE_TRUE = {
-            "!A->A&B->!A",
-            "A&B->!A",
-            "A&B->A",
-            "(A&B->A)->(A&B->!A)->!(A&B)",
-            "(A&B->!A)->!(A&B)",
-            "!(A&B)"
-    };
-    final static String[] FALSE_FALSE = {
-            "!B->A&B->!B",
-            "A&B->!B",
-            "A&B->B",
-            "(A&B->B)->(A&B->!B)->!(A&B)",
-            "(A&B->!B)->!(A&B)",
-            "!(A&B)"
-    };
 
     @Override
     protected String[] getSolution(boolean left, boolean right) {

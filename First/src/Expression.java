@@ -1,8 +1,4 @@
 
-/**
- * Created by Ilya on 01.12.2015.
- */
-
 public class Expression {
 
     long hash;

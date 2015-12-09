@@ -1,10 +1,6 @@
 import java.util.List;
 import java.util.Map;
 
-/**
- * Created by Ilya on 06.10.2015.
- */
-
 public class Constant extends Term {
 
     public final String name;
@@ -59,7 +55,7 @@ public class Constant extends Term {
     }
 
     @Override
-    public boolean compile(Map<String, Boolean> values) {
+    public boolean evaluate(Map<String, Boolean> values) {
         return values.get(name);
     }
 
@@ -69,7 +65,7 @@ public class Constant extends Term {
 
     @Override
     public void addSteps(Map<String, Boolean> varValues, List<Term> steps) {
-        steps.add(compile(varValues) ?
+        steps.add(evaluate(varValues) ?
                 this :
                 new Not(this)
         );

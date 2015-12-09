@@ -1,8 +1,4 @@
 
-/**
- * Created by Ilya on 05.12.2015.
- */
-
 public class And extends BinOperation {
 
     public And(Term left, Term right) {

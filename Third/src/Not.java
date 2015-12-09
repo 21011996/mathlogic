@@ -1,11 +1,23 @@
 import java.util.List;
 import java.util.Map;
 
-/**
- * Created by Ilya on 06.10.2015.
- */
-
 public class Not extends Term {
+
+    final static String[] TRUE = new String[]{
+            "A->!A->A",
+            "!A->A",
+            "!A->!A->!A",
+            "(!A->!A->!A)->(!A->(!A->!A)->!A)->!A->!A",
+            "(!A->(!A->!A)->!A)->!A->!A",
+            "!A->(!A->!A)->!A",
+            "!A->!A",
+            "(!A->A)->(!A->!A)->!!A",
+            "(!A->!A)->!!A",
+            "!!A"
+    };
+
+    final static String[] FALSE = new String[]{
+    };
 
     public Term term;
 
@@ -33,8 +45,8 @@ public class Not extends Term {
     }
 
     @Override
-    public boolean compile(Map<String, Boolean> values) {
-        return !term.compile(values);
+    public boolean evaluate(Map<String, Boolean> values) {
+        return !term.evaluate(values);
     }
 
     @Override
@@ -47,25 +59,9 @@ public class Not extends Term {
         }
     }
 
-    final static String[] TRUE = new String[]{
-            "A->!A->A",
-            "!A->A",
-            "!A->!A->!A",
-            "(!A->!A->!A)->(!A->(!A->!A)->!A)->!A->!A",
-            "(!A->(!A->!A)->!A)->!A->!A",
-            "!A->(!A->!A)->!A",
-            "!A->!A",
-            "(!A->A)->(!A->!A)->!!A",
-            "(!A->!A)->!!A",
-            "!!A"
-    };
-
-    final static String[] FALSE = new String[]{
-    };
-
     @Override
     public void addSteps(Map<String, Boolean> varValues, List<Term> steps) {
         term.addSteps(varValues, steps);
-        Term.addSteps(term.compile(varValues) ? TRUE : FALSE, term, null, steps);
+        Term.addSteps(term.evaluate(varValues) ? TRUE : FALSE, term, null, steps);
     }
 }

@@ -2,21 +2,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-
 public class VariousUtils {
 
-    private static final String[] unparsedAxioms = new String[]{
-            "A->(B->A)",
-            "(A->B)->(A->B->C)->(A->C)",
-            "A->B->A&B",
-            "A&B->A",
-            "A&B->B",
-            "A->A|B",
-            "B->A|B",
-            "(A->C)->(B->C)->(A|B->C)",
-            "(A->B)->(A->!B)->!A",
-            "!!A->A"
-    };
+    private static final String[] unparsedAxioms = TermBank.rawAxioms;
 
     private final List<Term> axioms;
     private final List<Term> checkedTerms;

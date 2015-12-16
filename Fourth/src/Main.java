@@ -82,7 +82,9 @@ public class Main {
         Expression curExp;
         String curLine;
         String tmp;
+
         for (int i = 0; i < inputProof.size(); i++) {
+            System.out.println("Current line: " + i);
             curExp = inputProof.get(i);
             curLine = curExp.toString();
             if ((AxiomChecker.doesMatchAxioms(curExp)) || ((conditions.length > 0)

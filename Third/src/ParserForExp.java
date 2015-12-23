@@ -1,10 +1,4 @@
-import com.google.common.base.Preconditions;
-import com.google.common.collect.Lists;
-
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.Stack;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -17,7 +11,8 @@ public class ParserForExp {
         while (m.find()) {
             matches.add(m.group(1));
         }
-        return Lists.newArrayList(matches);
+
+        return new ArrayList<>(matches);
     }
 
     private static class StringWithBrackets {
@@ -32,13 +27,19 @@ public class ParserForExp {
                 if (string.charAt(i) == '(') {
                     stack.push(i);
                 } else if (string.charAt(i) == ')') {
-                    Preconditions.checkArgument(!stack.empty(), "Paired bracket was not found at " + i);
+                    if (stack.empty()) {
+                        throw new IllegalArgumentException("Paired bracket was not found at " + i);
+                    }
+                    //Preconditions.checkArgument(!stack.empty(), "Paired bracket was not found at " + i);
                     int openIndex = stack.pop();
                     indexOfPairBracket[openIndex] = i;
                     indexOfPairBracket[i] = openIndex;
                 }
             }
-            Preconditions.checkArgument(stack.empty(), "Bracket balance is broken");
+            if (!stack.empty()) {
+                throw new IllegalArgumentException("Bracket balance is broken");
+            }
+            //Preconditions.checkArgument(stack.empty(), "Bracket balance is broken");
         }
 
         public char charAt(int index) {
@@ -46,12 +47,18 @@ public class ParserForExp {
         }
 
         public int getClosingBracket(int openIndex) {
-            Preconditions.checkArgument(string.charAt(openIndex) == '(', "Not open bracket");
+            if (string.charAt(openIndex) != '(') {
+                throw new IllegalArgumentException("Not open bracket");
+            }
+            //Preconditions.checkArgument(string.charAt(openIndex) == '(', "Not open bracket");
             return indexOfPairBracket[openIndex];
         }
 
         public int getOpeningBracket(int closeIndex) {
-            Preconditions.checkArgument(string.charAt(closeIndex) == ')', "Not close bracket");
+            if (string.charAt(closeIndex) != ')') {
+                throw new IllegalArgumentException("Not close bracket");
+            }
+            //Preconditions.checkArgument(string.charAt(closeIndex) == ')', "Not close bracket");
             return indexOfPairBracket[closeIndex];
         }
     }
@@ -67,7 +74,10 @@ public class ParserForExp {
                 continue;
             }
             if (source.charAt(i) == '-') {
-                Preconditions.checkArgument(source.charAt(i + 1) == '>', "Incomplete symbol '->'");
+                if (source.charAt(i + 1) != '>') {
+                    throw new IllegalArgumentException("Incomplete symbol '->'");
+                }
+                //Preconditions.checkArgument(source.charAt(i + 1) == '>', "Incomplete symbol '->'");
                 return new Sequence(parseDisjunction(source, from, i), parseExpression(source, i + 2, to));
             }
         }
@@ -104,7 +114,10 @@ public class ParserForExp {
         if (source.charAt(from) == '!') {
             return new Not(parseNegation(source, from + 1, to));
         } else if (source.charAt(from) == '(') {
-            Preconditions.checkState(source.getClosingBracket(from) == to - 1);
+            if (source.getClosingBracket(from) != to - 1) {
+                throw new IllegalArgumentException();
+            }
+            //Preconditions.checkState(source.getClosingBracket(from) == to - 1);
             return parseExpression(source, from + 1, to - 1);
         } else {
             return createNamed(source.string.substring(from, to));
@@ -112,7 +125,10 @@ public class ParserForExp {
     }
 
     protected Term createNamed(String name) {
-        Preconditions.checkState(name.matches("[A-Z][0-9]*"), "Incorrect name : " + name);
+        if (!name.matches("[A-Z][0-9]*")) {
+            throw new IllegalArgumentException("Incorrect name : " + name);
+        }
+        //Preconditions.checkState(name.matches("[A-Z][0-9]*"), "Incorrect name : " + name);
         return new Constant(name);
     }
 

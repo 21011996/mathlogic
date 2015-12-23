@@ -1,23 +1,11 @@
 import java.util.List;
 import java.util.Map;
 
+
 public class Not extends Term {
 
-    final static String[] TRUE = new String[]{
-            "A->!A->A",
-            "!A->A",
-            "!A->!A->!A",
-            "(!A->!A->!A)->(!A->(!A->!A)->!A)->!A->!A",
-            "(!A->(!A->!A)->!A)->!A->!A",
-            "!A->(!A->!A)->!A",
-            "!A->!A",
-            "(!A->A)->(!A->!A)->!!A",
-            "(!A->!A)->!!A",
-            "!!A"
-    };
-
-    final static String[] FALSE = new String[]{
-    };
+    final static String[] TRUE = TermBank.not_TRUE;
+    final static String[] FALSE = TermBank.EMPTY;
 
     public Term term;
 

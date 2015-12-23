@@ -68,7 +68,7 @@ public class ParserForExp {
             }
             if (source.charAt(i) == '-') {
                 Preconditions.checkArgument(source.charAt(i + 1) == '>', "Incomplete symbol '->'");
-                return new TermBank(parseDisjunction(source, from, i), parseExpression(source, i + 2, to));
+                return new Sequence(parseDisjunction(source, from, i), parseExpression(source, i + 2, to));
             }
         }
         return parseDisjunction(source, from, to);

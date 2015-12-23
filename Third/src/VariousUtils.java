@@ -2,6 +2,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+
 public class VariousUtils {
 
     private static final String[] unparsedAxioms = TermBank.rawAxioms;
@@ -44,10 +45,10 @@ public class VariousUtils {
 
     private boolean isCheckedByModusPonons(Term term) {
         for (Term checked : checkedTerms) {
-            if (checked.getClass() == TermBank.class) {
-                TermBank proofedTermBank = (TermBank) checked;
-                if (term.compWithExp(proofedTermBank.getRight())
-                        && wasChecked(proofedTermBank.getLeft())) {
+            if (checked.getClass() == Sequence.class) {
+                Sequence proofedSequence = (Sequence) checked;
+                if (term.compWithExp(proofedSequence.getRight())
+                        && wasChecked(proofedSequence.getLeft())) {
                     return true;
                 }
             }
@@ -93,25 +94,25 @@ public class VariousUtils {
         if (assumptions.size() >= 1) {
             resAlpha = assumptions.get(assumptions.size() - 1);
         }
-        resToBeProofed = new TermBank(proof.alphaAssum, proof.toBeProofed);
+        resToBeProofed = new Sequence(proof.alphaAssum, proof.toBeProofed);
         int firstIncorrectLine = -1;
         int lineNumber = 0;
         for (Term expI : proof.steps) {
             if (firstIncorrectLine == -1) {
                 checkedTerms.add(expI);
                 if (isCorespondsToAxiom(expI) || containsIn(assumptions, expI)) {
-                    Term alphaConsSigma = new TermBank(proof.alphaAssum, expI);
+                    Term alphaConsSigma = new Sequence(proof.alphaAssum, expI);
                     resSteps.add(expI);
-                    resSteps.add(new TermBank(expI, alphaConsSigma));
+                    resSteps.add(new Sequence(expI, alphaConsSigma));
                     resSteps.add(alphaConsSigma);
                 } else if (expI.compWithExp(proof.alphaAssum)) {
-                    Term AA = new TermBank(proof.alphaAssum, proof.alphaAssum);
-                    Term A_AA = new TermBank(proof.alphaAssum, AA);
-                    Term AA_A = new TermBank(AA, proof.alphaAssum);
-                    Term A__AA_A = new TermBank(proof.alphaAssum, AA_A);
+                    Term AA = new Sequence(proof.alphaAssum, proof.alphaAssum);
+                    Term A_AA = new Sequence(proof.alphaAssum, AA);
+                    Term AA_A = new Sequence(AA, proof.alphaAssum);
+                    Term A__AA_A = new Sequence(proof.alphaAssum, AA_A);
                     Term lemma1 = A_AA;
-                    Term lemma2 = new TermBank(A_AA, new TermBank(A__AA_A, AA));
-                    Term lemma3 = new TermBank(A__AA_A, AA);
+                    Term lemma2 = new Sequence(A_AA, new Sequence(A__AA_A, AA));
+                    Term lemma3 = new Sequence(A__AA_A, AA);
                     Term lemma4 = A__AA_A;
                     Term lemma5 = AA;
                     resSteps.add(lemma1);
@@ -123,12 +124,12 @@ public class VariousUtils {
                     Term expK = null;
                     Term expJ = null;
                     for (Term proofed : checkedTerms) {
-                        if (proofed.getClass() == TermBank.class) {
-                            TermBank proofedTermBank = (TermBank) proofed;
-                            if (expI.compWithExp(proofedTermBank.getRight())
-                                    && wasChecked(proofedTermBank.getLeft())) {
-                                expK = proofedTermBank;
-                                expJ = proofedTermBank.getLeft();
+                        if (proofed.getClass() == Sequence.class) {
+                            Sequence proofedSequence = (Sequence) proofed;
+                            if (expI.compWithExp(proofedSequence.getRight())
+                                    && wasChecked(proofedSequence.getLeft())) {
+                                expK = proofedSequence;
+                                expJ = proofedSequence.getLeft();
                                 break;
                             }
                         }
@@ -136,12 +137,12 @@ public class VariousUtils {
                     if (expK == null || expJ == null) {
                         firstIncorrectLine = lineNumber;
                     } else {
-                        Term res2 = new TermBank(new TermBank(proof.alphaAssum, new TermBank(expJ, expI)),
-                                new TermBank(proof.alphaAssum, expI));
-                        Term res1 = new TermBank(new TermBank(proof.alphaAssum, expJ), res2);
+                        Term res2 = new Sequence(new Sequence(proof.alphaAssum, new Sequence(expJ, expI)),
+                                new Sequence(proof.alphaAssum, expI));
+                        Term res1 = new Sequence(new Sequence(proof.alphaAssum, expJ), res2);
                         resSteps.add(res1);
                         resSteps.add(res2);
-                        resSteps.add(new TermBank(proof.alphaAssum, expI));
+                        resSteps.add(new Sequence(proof.alphaAssum, expI));
                     }
                 }
             }

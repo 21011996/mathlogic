@@ -84,9 +84,6 @@ public class ArgumentBuilder {
         VariousUtils.CheckedWithAssumptions proof = TermBank.getList(0, exp, varNames, varValues);
         for (Term step : proof.steps) {
             out.println(step.toString());
-            if (step.compWithExp(exp)) {
-                break;
-            }
         }
         return "proofed";
     }

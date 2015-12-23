@@ -2,6 +2,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class Main {
@@ -10,6 +11,7 @@ public class Main {
     static String inputFile = "bigbadtest.in";
     static String outputFile = "bigbadtest.out";
     List<Expression> inputProof = new ArrayList<>();
+    HashMap<String, ArrayList<Integer>> inputHash = new HashMap<>();
     List<String> outputProof = new ArrayList<>();
     List<String> forallProof = new ArrayList<>();
     List<String> existProof = new ArrayList<>();
@@ -65,12 +67,28 @@ public class Main {
         loadForallProof();
         loadExistProof();
         String inputString;
+
         if ((inputString = in.nextLine()) != null) {
             initConditions(inputString);
         }
+
         while ((inputString = in.nextLine()) != null) {
             inputProof.add((new ProofParser()).parse(inputString));
         }
+
+        for (int i = 0; i<inputProof.size(); i++) {
+            String s = inputProof.get(i).toString();
+            if (inputHash.containsKey(s)) {
+                ArrayList<Integer> temp = inputHash.get(s);
+                temp.add(i);
+                inputHash.put(s,temp);
+            } else {
+                ArrayList<Integer> temp = new ArrayList<>();
+                temp.add(i);
+                inputHash.put(s,temp);
+            }
+        }
+
         StringBuilder headString = new StringBuilder();
         if (conditions.length > 0) {
             headString.append(conditions[0]);
@@ -87,6 +105,7 @@ public class Main {
             System.out.println("Current line: " + i);
             curExp = inputProof.get(i);
             curLine = curExp.toString();
+
             if ((AxiomChecker.doesMatchAxioms(curExp)) || ((conditions.length > 0)
                     && isCondition(curLine))) {
                 tmp = curLine + "->" + alpha + "->" + curLine;
@@ -104,6 +123,7 @@ public class Main {
                 incorrectInputMsg.append(": ").append(AxiomChecker.getErrorMsg());
                 break;
             }
+
             if (curLine.equals(alpha)) {
                 tmp = alpha + "->((" + alpha + "->" + alpha + ")->" + alpha + ")";
                 outputProof.add(tmp);
@@ -120,6 +140,7 @@ public class Main {
                 outputProof.add(tmp);
                 continue;
             }
+
             String lineJ = isModusPonensOfTwoLines(curLine, i);
             if (lineJ != null) {
                 tmp = "(" + alpha + "->" + lineJ + ")->" +
@@ -133,6 +154,7 @@ public class Main {
                 outputProof.add(tmp);
                 continue;
             }
+
             lineJ = isApplicationOfForallRule(curExp);
             if (lineJ == null) {
                 String left = ((BinOperations.Implication) curExp).getLeft().toString();
@@ -146,6 +168,7 @@ public class Main {
                 incorrectInputMsg.append(": ").append(lineJ);
                 break;
             }
+
             lineJ = isApplicationOfExistRule(curExp);
             if (lineJ == null) {
                 String left = ((Quantors.Exist) ((BinOperations.Implication) curExp).getLeft()).getExpression().toString();
@@ -181,11 +204,20 @@ public class Main {
         for (int i = 0; i < k; i++) {
             lineJ = inputProof.get(i).toString();
             requiredString = "(" + lineJ + "->" + curLine + ")";
-            for (int j = 0; j < k; j++) {
+
+            if (inputHash.containsKey(requiredString)) {
+                ArrayList<Integer> temp = inputHash.get(requiredString);
+                for (int j : temp) {
+                    if (j < k) {
+                        return lineJ;
+                    }
+                }
+            }
+            /*for (int j = 0; j < k; j++) {
                 if (requiredString.equals(inputProof.get(j).toString())) {
                     return lineJ;
                 }
-            }
+            }*/
         }
 
         return null;

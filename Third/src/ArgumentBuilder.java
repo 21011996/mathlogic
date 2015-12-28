@@ -2,6 +2,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
@@ -82,8 +83,17 @@ public class ArgumentBuilder {
             varValues.put(name, false);
         }
         VariousUtils.CheckedWithAssumptions proof = TermBank.getList(0, exp, varNames, varValues);
+        HashSet<String> outputed = new HashSet<>();
         for (Term step : proof.steps) {
-            out.println(step.toString());
+            String s = step.toString();
+            if (s.equals(exp.toString())) {
+                out.println(s);
+                break;
+            }
+            if (!outputed.contains(s)) {
+                out.println(s);
+                outputed.add(s);
+            }
         }
         return "proofed";
     }
